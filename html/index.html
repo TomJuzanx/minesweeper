@@ -20,11 +20,28 @@
         </header>
         <div id="container">
             <div class="button-and-game-number">
-                <form action="" method="get">
+                <form action="" method="get" class="form">
+                    <div class="diff-range">
+                        <label for="difficulty">Difficulté</label>
+                        <input
+                            type="range"
+                            id="difficulty"
+                            name="difficulty"
+                            min="0.125"
+                            max="0.2"
+                            step="0.0375"
+                            list="tickmarks"
+                        />
+                        <div class="legend">
+                            <option value="0.125">Facile</option>
+                            <option value="0.16">Moyen</option>
+                            <option value="0.2">Difficile</option>
+                        </div>
+                    </div>
                     <input
                         type="number"
                         name="nb-box"
-                        placeholder="Taille"
+                        placeholder="Taille :"
                         value=""
                         class="input"
                         id="nb-box"

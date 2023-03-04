@@ -5,6 +5,7 @@ divGameNumber.innerText = 'Partie n° 0';
 const buttonReset = document.querySelector('.button-reset');
 const buttonPlay = document.querySelector('.button-play');
 const inputNbBox = document.querySelector('#nb-box');
+const inputDifficulty = document.querySelector('#difficulty');
 const form = document.querySelector('form');
 const divResult = document.querySelector('.result');
 
@@ -33,13 +34,21 @@ const redim = (value) => {
     dimGame = value * dimBox;
 };
 
+const setDifficulty = () => {
+    bombRate = parseFloat(inputDifficulty.value);
+    console.log(bombRate);
+};
+
 const rollBox = () => {
     redim(parseInt(inputNbBox.value));
+    setDifficulty();
     gameNumber++;
     buttonPlay.innerText = 'Jouer';
     divGame.innerHTML = '';
     divGame.style.cssText = `width: ${dimGame}px; height: ${dimGame}px`;
     divContainer.appendChild(divGame);
+    divResult.classList.remove('lose', 'win');
+    divResult.innerText = '';
 
     trapped = [];
     nonTrapped = [];
@@ -219,12 +228,12 @@ const addFlag = (event) => {
 };
 
 const endGame = (boxId, how) => {
-    console.log('how', how)
+    console.log('how', how);
     const allBox = divGame.childNodes;
     const theBox = document.querySelector(`#${boxId}`);
-    
+
     divGame.style.pointerEvents = 'none';
-    
+
     for (let box of allBox) {
         if (box.classList.contains('bomb')) {
             box.classList.remove('box');
@@ -232,19 +241,17 @@ const endGame = (boxId, how) => {
             box.style.backgroundImage = "url('https://esraa-alaarag.github.io/Minesweeper/images/bomb.png')";
         }
 
-        box.classList.remove('flag')
+        box.classList.remove('flag');
     }
 
     if (how === 'lose') {
 
         theBox.style.backgroundColor = 'red';
-        divResult.classList.remove('win');
         divResult.classList.add('lose');
         divResult.innerText = 'Perdu !';
-        
+
     }
     else if (how === 'win') {
-        divResult.classList.remove('lose');
         divResult.classList.add('win');
         divResult.innerText = 'Gagné !';
     }
@@ -263,6 +270,10 @@ form.addEventListener('keydown', (event) => {
 
 inputNbBox.onblur = () => {
     redim(parseInt(inputNbBox.value));
+};
+
+inputDifficulty.onblur = () => {
+    setDifficulty();
 };
 
 divGame.addEventListener('click', (event) => {
