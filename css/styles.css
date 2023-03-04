@@ -43,7 +43,7 @@ h1 {
 .box {
     display: flex;
     justify-content: center;
-    align-items: center ;
+    align-items: center;
 }
 
 .box-no-bomb,
@@ -63,11 +63,15 @@ h1 {
 .bomb,
 .flag {
     background-size: 100%;
-    background-origin: border-box;
 }
 
 .bomb {
-    background-image: url("https://minesweeper.us/media/bombe.png");
+    background-origin: border-box;
+}
+
+.flag {
+    background-origin: content-box;
+    background-image: url("https://cdn0.iconfinder.com/data/icons/basic-ui-elements-flat/512/flat_basic_home_flag_-512.png");
 }
 
 .button,
@@ -134,7 +138,7 @@ input {
 .seven-bomb,
 .seven-bomb,
 .eight-bomb {
-    font-family: 'Aclonica', sans-serif;
+    font-family: "Aclonica", sans-serif;
     font-weight: bold;
     font-size: 2rem;
 }

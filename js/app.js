@@ -1,5 +1,3 @@
-
-
 const divContainer = document.querySelector('#container');
 const divGame = document.querySelector('#game');
 const divGameNumber = document.querySelector('.game-number');
@@ -15,11 +13,14 @@ const dimBox = 50;
 let boxPerLine;
 let numberOfBox;
 let dimGame;
-let gameNumber;
+let gameNumber = 0;
 
-let bombRate = 0.25;
+let bombRate = 0.125; // hard
+//let bombRate = 0.2; // moyen
+//let bombRate = 0.2; // facile
 
 let trapped = [];
+let nonTrapped = [];
 let found = [];
 
 const rng = (min, max) => {
@@ -32,44 +33,40 @@ const redim = (value) => {
     dimGame = value * dimBox;
 };
 
-const setBomb = () => {
+const rollBox = () => {
+    redim(parseInt(inputNbBox.value));
+    gameNumber++;
+    buttonPlay.innerText = 'Jouer';
+    divGame.innerHTML = '';
+    divGame.style.cssText = `width: ${dimGame}px; height: ${dimGame}px`;
+    divContainer.appendChild(divGame);
+
     trapped = [];
+    nonTrapped = [];
     for (let i = 0; i < Math.round(numberOfBox * bombRate); i++) {
         let rngNumber = rng(1, numberOfBox);
         while (trapped.includes(rngNumber)) rngNumber = rng(1, numberOfBox);
         trapped.push(rngNumber);
     }
-    console.log(trapped);
-};
 
-const addBox = (boxNumber) => {
-    const divBox = document.createElement('div');
-    divBox.setAttribute('class', 'box');
-    divBox.setAttribute('id', `box${boxNumber}`);
-    if (trapped.includes(boxNumber)) divBox.classList.add('bomb');
-    divBox.style.cssText = `
-        width: ${dimBox - 2}px;
-        height: ${dimBox - 2}px
-    `;
-    divBox.innerText = `${boxNumber}`;
-    document.querySelector('#game').appendChild(divBox);
-};
-
-const rollBox = () => {
-    redim(parseInt(inputNbBox.value));
-    gameNumber++;
-    divGame.innerHTML = '';
-    divGame.style.cssText = `width: ${dimGame}px; height: ${dimGame}px`;
-    divContainer.appendChild(divGame);
-
-    setBomb();
-    //console.log(trapped);
-
-    for (let i = 1; i < numberOfBox + 1; i++) {
-        addBox(i);
+    for (let i = 1; i < numberOfBox; i++) {
+        if (!trapped.includes(i)) nonTrapped.push(i);
     }
 
-    divGameNumber.innerHTML = `Partie n° ${gameNumber}`;
+    for (let i = 1; i < numberOfBox + 1; i++) {
+        const divBox = document.createElement('div');
+        divBox.setAttribute('class', 'box');
+        divBox.setAttribute('id', `box${i}`);
+        if (trapped.includes(i)) divBox.classList.add('bomb');
+        divBox.style.cssText = `
+            width: ${dimBox - 2}px;
+            height: ${dimBox - 2}px
+        `;
+        //divBox.innerText = `${boxNumber}`;
+        document.querySelector('#game').appendChild(divBox);
+    }
+
+    divGameNumber.innerText = `Partie n° ${gameNumber}`;
 };
 
 const resetGame = () => {
@@ -84,41 +81,36 @@ const resetGame = () => {
     buttonPlay.style.color = 'revert-layer';
     buttonPlay.style.boxShadow = 'revert-layer';
     buttonPlay.style.pointerEvents = 'revert-layer';
+    buttonPlay.innerText = 'Jouer';
 };
 
 const noBomb = (boxId) => {
-    const theBox = document.querySelector(`#${boxId}`);
     //console.log('boxId', boxId);
-    const num = numberOfBomb(boxId);
+    const theBox = document.querySelector(`#${boxId}`);
+    const boxIdNumber = Number(boxId.substring(3));
+
+    const num = numberOfBomb(boxIdNumber);
     //console.log('num', num);
+
     theBox.classList.add('box-no-bomb');
     if (num > 0) theBox.classList.add(numberToClass(num));
     theBox.classList.remove('box');
     theBox.innerText = num > 0 ? `${num}` : '';
+
+    if (num === 0) {
+        let adjacentBoxId = getAdjacent(boxIdNumber);
+        //console.log('adjacentBoxId', adjacentBoxId);
+        for (let id of adjacentBoxId) {
+            if (!trapped.includes(id) && document.querySelector(`#box${id}`).classList.contains('box')) noBomb(`box${id}`);
+        }
+    }
+
+    nonTrapped = nonTrapped.filter(id => id !== boxIdNumber);
+    if (nonTrapped.length === 0) endGame(boxId, 'win');
+
 };
 
-const itsbomb = (boxId) => {
-    const theBox = document.querySelector(`#${boxId}`);
-    theBox.classList.add('box-no-bomb', 'bomb');
-    theBox.classList.remove('box');
-    theBox.style.backgroundColor = '#red';
-    lose();
-};
-
-const lose = () => {
-    divResult.classList.add('lose');
-    divResult.innerText = 'Perdu !';
-    divGame.style.pointerEvents = 'none';
-    buttonPlay.style.pointerEvents = 'none';
-    buttonPlay.style.color = '#a1a4a7';
-    buttonPlay.style.boxShadow = 'inset 0 0 0 2px #a1a4a7';
-};
-
-const numberOfBomb = (boxId) => {
-    let nbBomb = 0;
-    boxId = Number(boxId.substring(3));
-    // console.log('tempBoxId', boxIdNumber);
-    // console.log('boxPerLine', boxPerLine);
+const getAdjacent = (boxId) => {
     let adjacentBox = [];
     if (boxId === 1) { //top left
         adjacentBox = [ boxId + 1,
@@ -179,6 +171,16 @@ const numberOfBomb = (boxId) => {
         boxId - (boxPerLine + 1) ];
     }
 
+    return adjacentBox;
+};
+
+const numberOfBomb = (boxId) => {
+    let nbBomb = 0;
+    // console.log('tempBoxId', boxIdNumber);
+    // console.log('boxPerLine', boxPerLine);
+
+    let adjacentBox = getAdjacent(boxId);
+
     for (let box of adjacentBox) {
         if (box > dimGame) adjacentBox.splice(--i, 1);
     }
@@ -211,8 +213,47 @@ const numberToClass = (number) => {
     }
 };
 
+const addFlag = (event) => {
+    event.target.classList.toggle('flag');
+    event.target.pointerEvents = 'none';
+};
+
+const endGame = (boxId, how) => {
+    console.log('how', how)
+    const allBox = divGame.childNodes;
+    const theBox = document.querySelector(`#${boxId}`);
+    
+    divGame.style.pointerEvents = 'none';
+    
+    for (let box of allBox) {
+        if (box.classList.contains('bomb')) {
+            box.classList.remove('box');
+            box.classList.add('box-no-bomb', 'bomb');
+            box.style.backgroundImage = "url('https://esraa-alaarag.github.io/Minesweeper/images/bomb.png')";
+        }
+
+        box.classList.remove('flag')
+    }
+
+    if (how === 'lose') {
+
+        theBox.style.backgroundColor = 'red';
+        divResult.classList.remove('win');
+        divResult.classList.add('lose');
+        divResult.innerText = 'Perdu !';
+        
+    }
+    else if (how === 'win') {
+        divResult.classList.remove('lose');
+        divResult.classList.add('win');
+        divResult.innerText = 'Gagné !';
+    }
+
+    buttonPlay.innerText = 'Rejouer';
+};
+
 buttonPlay.addEventListener('click', rollBox);
-buttonReset.addEventListener('click', resetGame);
+//buttonReset.addEventListener('click', resetGame);
 form.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -227,14 +268,21 @@ inputNbBox.onblur = () => {
 divGame.addEventListener('click', (event) => {
     const id = event.target.id;
     if (id.includes('box')) {
-        if (trapped.includes(Number(id.substring(3)))) itsbomb(id);
+        if (event.target.classList.contains('flag')) return;
+
+        const boxIdNumber = Number(id.substring(3));
+        if (trapped.includes(boxIdNumber)) {
+            endGame(id, 'lose');
+        }
         else noBomb(id);
     }
 });
 
 divGame.addEventListener('mousedown', (event) => {
     //console.log(event);
+    if (event.button === 2 && event.target.classList.contains('box')) addFlag(event);
 });
-divGame.addEventListener('contextmenu', (event) => {
+
+divContainer.addEventListener('contextmenu', (event) => {
     event.preventDefault();
 });
