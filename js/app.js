@@ -14,11 +14,8 @@ const dimBox = 50;
 let boxPerLine;
 let numberOfBox;
 let dimGame;
+let bombRate;
 let gameNumber = 0;
-
-let bombRate = 0.125; // hard
-//let bombRate = 0.2; // moyen
-//let bombRate = 0.2; // facile
 
 let trapped = [];
 let nonTrapped = [];
@@ -43,7 +40,7 @@ const rollBox = () => {
     redim(parseInt(inputNbBox.value));
     setDifficulty();
     gameNumber++;
-    buttonPlay.innerText = 'Jouer';
+    buttonPlay.innerText = 'Jouer !';
     divGame.innerHTML = '';
     divGame.style.cssText = `width: ${dimGame}px; height: ${dimGame}px`;
     divContainer.appendChild(divGame);
@@ -90,7 +87,7 @@ const resetGame = () => {
     buttonPlay.style.color = 'revert-layer';
     buttonPlay.style.boxShadow = 'revert-layer';
     buttonPlay.style.pointerEvents = 'revert-layer';
-    buttonPlay.innerText = 'Jouer';
+    buttonPlay.innerText = 'Jouer !';
 };
 
 const noBomb = (boxId) => {
@@ -256,7 +253,7 @@ const endGame = (boxId, how) => {
         divResult.innerText = 'Gagné !';
     }
 
-    buttonPlay.innerText = 'Rejouer';
+    buttonPlay.innerText = 'Rejouer !!';
 };
 
 buttonPlay.addEventListener('click', rollBox);
