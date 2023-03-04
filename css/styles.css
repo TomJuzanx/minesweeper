@@ -1,0 +1,165 @@
+body {
+    background-color: #e1c699;
+}
+
+#top-header {
+    background-color: #c8ad7f;
+}
+
+#top-header p {
+    font-size: 1.5rem;
+    text-align: center;
+    font-style: italic;
+    padding-bottom: 1rem;
+}
+
+#container {
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 3rem;
+    padding: 1rem 1rem 0 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#game {
+    margin: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    background-color: #eed8b2;
+}
+.box-no-bomb,
+.bomb,
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center ;
+}
+
+.box-no-bomb,
+.bomb {
+    background-color: lightgrey;
+    border: rgb(122, 122, 122) solid 1px;
+}
+
+.box {
+    background-color: lightgrey;
+    border-left: 8px white solid;
+    border-top: 8px white solid;
+    border-right: 8px #747373 solid;
+    border-bottom: 8px #747373 solid;
+}
+
+.bomb,
+.flag {
+    background-size: 100%;
+    background-origin: border-box;
+}
+
+.bomb {
+    background-image: url("https://minesweeper.us/media/bombe.png");
+}
+
+.button,
+.game-number,
+input {
+    display: inline-block;
+    outline: none;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color, border-color, color, box-shadow,
+        filter;
+    transition-duration: 0.3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px 14px 18px;
+    color: #616467;
+    box-shadow: inset 0 0 0 2px #616467;
+    background-color: transparent;
+    height: 48px;
+}
+
+.button {
+    cursor: pointer;
+}
+
+.button:hover {
+    color: #fff;
+    background-color: #616467;
+}
+
+.button-and-game-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.lose,
+.win {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.lose {
+    color: red;
+}
+
+.win {
+    color: green;
+}
+
+.one-bomb,
+.two-bomb,
+.tree-bomb,
+.four-bomb,
+.five-bomb,
+.six-bomb,
+.seven-bomb,
+.seven-bomb,
+.eight-bomb {
+    font-family: 'Aclonica', sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.one-bomb {
+    color: blue;
+}
+.two-bomb {
+    color: green;
+}
+.tree-bomb {
+    color: red;
+}
+.four-bomb {
+    color: purple;
+}
+.five-bomb {
+    color: orange;
+}
+.six-bomb {
+    color: darkred;
+}
+.seven-bomb {
+    color: black;
+}
+.eight-bomb {
+    color: darkgrey;
+}

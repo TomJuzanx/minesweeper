@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.bunny.net" />
+        <link
+            href="https://fonts.bunny.net/css?family=aclonica:400"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="../css/reset.css" />
+        <link rel="stylesheet" href="../css/styles.css" />
+        <title>Démineur</title>
+    </head>
+    <body>
+        <header id="top-header">
+            <h1>Démineur</h1>
+            <p>by Tom Juzanx</p>
+        </header>
+        <div id="container">
+            <div class="button-and-game-number">
+                <form action="" method="get">
+                    <input
+                        type="number"
+                        name="nb-box"
+                        placeholder="Taille"
+                        value=""
+                        class="input"
+                        id="nb-box"
+                    />
+                </form>
+                <button class="button button-play">Jouer</button>
+                <button class="button button-reset">Reset</button>
+                <div class="game-number"></div>
+            </div>
+            <div id="game"></div>
+            <div class="result"></div>
+        </div>
+        <script src="../js/app.js"></script>
+    </body>
+</html>
