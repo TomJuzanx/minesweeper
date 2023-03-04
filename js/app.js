@@ -8,7 +8,6 @@ const inputNbBox = document.querySelector('#nb-box');
 const inputDifficulty = document.querySelector('#difficulty');
 const form = document.querySelector('form');
 const divResult = document.querySelector('.result');
-
 const dimBox = 50;
 
 let boxPerLine;
@@ -16,7 +15,6 @@ let numberOfBox;
 let dimGame;
 let bombRate;
 let gameNumber = 0;
-
 let trapped = [];
 let nonTrapped = [];
 let found = [];
@@ -33,7 +31,6 @@ const redim = (value) => {
 
 const setDifficulty = () => {
     bombRate = parseFloat(inputDifficulty.value);
-    console.log(bombRate);
 };
 
 const rollBox = () => {
@@ -225,7 +222,6 @@ const addFlag = (event) => {
 };
 
 const endGame = (boxId, how) => {
-    console.log('how', how);
     const allBox = divGame.childNodes;
     const theBox = document.querySelector(`#${boxId}`);
 
